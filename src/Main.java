@@ -92,9 +92,6 @@ public class Main {
     }
 
     private static void getTaskByDay(TaskService taskService, Scanner scanner) {
-        System.out.println("Введите дату задачи в формате dd.mm.yyyy: ");
-        String date = scanner.nextLine();
-        LocalDate taskDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         var allTaskByDay = taskService.getAllByDate(taskDate);
         System.out.println("Список задач этого дня:");
         for (Task task : allTaskByDay) {

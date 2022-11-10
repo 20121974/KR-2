@@ -1,4 +1,5 @@
 import task.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -8,7 +9,9 @@ import java.util.Scanner;
 public class Main {
     public static TaskService taskService = new TaskService();
     private static LocalDate taskDate;
+
     private static CharSequence date;
+    private static CharSequence time;
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
@@ -37,15 +40,19 @@ public class Main {
             }
         }
     }
+
     private static void addTask(TaskService taskService, Scanner scanner) {
         System.out.println("Введите заголовок задачи: ");
         String name = scanner.nextLine();
         scanner.nextLine();
         System.out.println("Введите описание задачи: ");
         String description = scanner.nextLine();
+        System.out.println("Введите дату задачи в формате dd.mm.yyyy: ");
+        String date = scanner.nextLine();
+        LocalDate taskDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         System.out.println("Введите время задачи в формате HH:mm: ");
-        LocalTime taskTime = LocalTime.parse(date, DateTimeFormatter.ofPattern("HH:mm"));
-        scanner.nextLine();
+        String time = scanner.nextLine();
+        LocalTime taskTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
         LocalDateTime resultDate = LocalDateTime.of(taskDate, taskTime);
         System.out.println("Введите тип задачи: Личный (1) или рабочий (2)");
         int type = Integer.parseInt(scanner.nextLine());
@@ -73,8 +80,8 @@ public class Main {
             case 4:
                 taskService.add(new YearTask(name, description, taskType, resultDate));
             default:
-                    throw new RuntimeException("Нет такого типа задач");
-            }
+                throw new RuntimeException("Нет такого типа задач");
+        }
     }
 
 
@@ -83,19 +90,20 @@ public class Main {
         int id = scanner.nextInt();
         taskService.remove(id);
     }
+
     private static void getTaskByDay(TaskService taskService, Scanner scanner) {
         System.out.println("Введите дату задачи в формате dd.mm.yyyy: ");
         String date = scanner.nextLine();
         LocalDate taskDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         var allTaskByDay = taskService.getAllByDate(taskDate);
         System.out.println("Список задач этого дня:");
-        for (Task task:allTaskByDay) {
+        for (Task task : allTaskByDay) {
             System.out.println(task);
         }
     }
+
     private static void printMenu() {
     }
-
 
 
 }
